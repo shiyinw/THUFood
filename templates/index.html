@@ -46,7 +46,7 @@
       
       <div class="main-wrap">
         <div class="cover_1">
-          <div class="img_bg" style="background-image: url(../static/img/slider-1.jpg);" data-stellar-background-ratio="0.5">
+          <div class="img_bg" style="background-image: url({{url_for('static', filename='img/slider-1.jpg')}});" data-stellar-background-ratio="0.5">
             <div class="container">
               <div class="row align-items-center">
                 <div class="col-md-12" data-aos="fade-up">
@@ -67,7 +67,7 @@
                     <span class="flaticon-soup"></span>
                   </div>
                   <div class="media-body">
-                    <h3>顾客登陆</h3>
+                      <h3><a href="./customer">顾客登陆</a></h3>
                     <p>您的青睐是我们不断进步的动力</p>
                   </div>
                 </div>
@@ -78,7 +78,7 @@
                     <span class="flaticon-vegetables"></span>
                   </div>
                   <div class="media-body">
-                      <h3><a href="{{url_for('login_cook')}}">厨师登陆</a></h3>
+                      <h3><a href="./cook">厨师登陆</a></h3>
                     <p>用审美和品味点亮你的一天</p>
                   </div>
                 </div>
@@ -89,7 +89,7 @@
                     <span class="flaticon-tray"></span>
                   </div>
                   <div class="media-body">
-                    <h3>服务员登陆</h3>
+                      <h3><a href="./waiter">服务员登陆</a></h3>
                     <p>用优质的服务优化用餐体验</p>
                   </div>
                 </div>
@@ -100,7 +100,7 @@
                     <span class="flaticon-pancake"></span>
                   </div>
                   <div class="media-body">
-                    <h3>管理员登陆</h3>
+                      <h3><a href="./admin">管理员登陆</a></h3>
                     <p>做幕后的英雄军师</p>
                   </div>
                 </div>
