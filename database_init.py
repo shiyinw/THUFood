@@ -3,29 +3,82 @@ from backend import DBMS
 dbms = DBMS("166.111.71.220", "1521", "dbta")
 dbms.login(user="s2016011246", password="19980211")
 
-# dbms.sql("DROP TABLE Password")
-# dbms.sql("DROP TABLE Cook")
+# Password
+if False:
+    dbms.sql("DROP TABLE Password")
+    init_password = "CREATE TABLE Password (username  varchar2(10) NOT NULL, password varchar2(20) NOT NULL, type char(1) NOT NULL, PRIMARY KEY (username, password))"
+    dbms.sql(init_password)
+    dbms.insert_user("cook0", "cook0", "c")
+    dbms.insert_user("waiter0", "waiter0", "w")
+    dbms.insert_user("admin", "admin", "a")
+    dbms.insert_user("customer0", "customer0", "x")
 
-init_password = "CREATE TABLE Password (username  varchar2(10) NOT NULL, password varchar2(20) NOT NULL, type char(1) NOT NULL, PRIMARY KEY (username, password))"
+# Cook
+if False:
+    try:
+        dbms.sql("DROP TABLE Cook")
+    except:
+        pass
+    init_cook = "CREATE TABLE Cook (cookNo varchar2(10) NOT NULL, cookName varchar2(10), workdate date, PRIMARY KEY(cookNo))"
+    dbms.sql(init_cook)
+    dbms.insert_cook("cook0", "Hellen", "2018-01-01")
 
-init_customer = "CREATE TABLE Customer (customerNo varchar2(20) NOT NULL, customName varchar2(10), birthday date, phone number(11, 0), email varchar2(50), PRIMARY KEY(customerNo))"
-init_cook = "CREATE TABLE Cook (cookNo varchar2(20) NOT NULL, cookName varchar2(10), date date, PRIMARY KEY(cookNo))"
-init_waiter = "CREATE TABLE Waiter (waiterNo varchar2(20) NOT NULL, waiterName varchar2(10), date date, PRIMARY KEY(waiterNo))"
+# Waiter
+if False:
+    try:
+        dbms.sql("DROP TABLE Waiter")
+    except:
+        pass
+    init_waiter = "CREATE TABLE Waiter (waiterNo varchar2(10) NOT NULL, waiterName varchar2(10), workdate date, PRIMARY KEY(waiterNo))"
+    dbms.sql(init_waiter)
+    dbms.insert_waiter("waiter0", "Julia", "2016-06-13")
 
-init_dish = "CREATE TABLE Waiter (waiterNo varchar2(20) NOT NULL, waiterName varchar2(10), date date, PRIMARY KEY(waiterNo))"
+# Customer
+if False:
+    try:
+        dbms.sql("DROP TABLE Customer")
+    except:
+        pass
+    init_customer = "CREATE TABLE Customer (customerNo varchar2(20) NOT NULL, customName varchar2(10), birthday date, phone number(11, 0), email varchar2(50), PRIMARY KEY(customerNo))"
+    dbms.sql(init_customer)
+    dbms.insert_customer("customer0", "Lily", "1996-07-13", "18800000000", "xxx@126.com")
 
-init_cookfood = "CREATE TABLE CookFood (dishNo varchar2(10) NOT NULL, cookNo varchar2(10) NOT NULL, time timestamp, PRIMARY KEY(dishNo, cookNo))"
 
-# dbms.sql(init_password)
-# dbms.sql(init_cookfood)
+if False:
+    try:
+        dbms.sql("DROP TABLE Dish")
+    except:
+        pass
+    init_dish = "CREATE TABLE Dish (dishNo varchar2(20) NOT NULL, dishName varchar2(20) NOT NULL, dishPrice number(5) NOT NULL, dishDescription varchar2(100), photo blob, PRIMARY KEY(dishNo))"
+    dbms.sql(init_dish)
+    dbms.insert_dish(dishNo="peking0", dishName="Peking Duck", dishPrice=100, dishDescription="Good! Perfect!")
+    dbms.insert_dish(dishNo="peking1", dishName="LuZhu", dishPrice=20, dishDescription="Good! Perfect! I like it!")
 
-dbms.conn.commit()
+
+if False:
+    try:
+        dbms.sql("DROP TABLE Orders")
+    except:
+        pass
+    init_order = "CREATE TABLE Orders (orderNo varchar2(20) NOT NULL, customerNo varchar2(20) NOT NULL, waiterNo varchar2(10), ordertime timestamp, totalPrice number(5), status char(2), PRIMARY KEY(orderNo))"
+    dbms.sql(init_order)
+    dbms.insert_order(orderNo="order0", customerNo="customer0", waiterNo="waiter0", ordertime="2018-12-31  12:05:34", totalPrice=198, status="IN")
 
 
-# dbms.insert_user("cook0", "cook0", "c")
-# dbms.insert_user("waiter0", "waiter0", "w")
-# dbms.insert_user("admin", "admin", "a")
-# dbms.insert_user("customer0", "customer0", "x")
+if False:
+    try:
+        dbms.sql("DROP TABLE CookFood")
+    except:
+        pass
+    init_cookfood = "CREATE TABLE CookFood (dishNo varchar2(10), cookNo varchar2(10), cookfoodtime timestamp, PRIMARY KEY(dishNo, cookNo))"
+    dbms.sql(init_cookfood)
+    dbms.insert_cookfood(dishNo="dish0", cookNo="cook0", cookfoodtime="2018-12-31  12:05:34")
+
+
+# dbms.sql("DROP TABLE Comment")
+# dbms.sql("DROP TABLE Include")
+# dbms.sql("DROP TABLE Mention")
+
 
 print(dbms.validate("cook0", "cook0", "c"))
 

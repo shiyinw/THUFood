@@ -33,7 +33,7 @@ class DBMS(object):
         return self.sql(sql).fetchall()
 
     def query_cook_dishes(self, cookid):
-        sql = "SELECT * FROM CookFood WHERE cookNo={}".format(cookid)
+        sql = "SELECT * FROM CookFood WHERE cookNo='{}'".format(cookid)
         return self.sql(sql).fetchall()
 
     def query_include(self, dishid, orderid):
@@ -49,6 +49,35 @@ class DBMS(object):
         self.sql(sql)
         self.conn.commit()
 
+    def insert_cook(self, cookNo, cookName, date):
+        sql = "INSERT INTO Cook VALUES ('{}', '{}', DATE '{}')".format(cookNo, cookName, date)
+        self.sql(sql)
+        self.conn.commit()
+
+    def insert_waiter(self, waiterNo, waiterName, date):
+        sql = "INSERT INTO Waiter VALUES ('{}', '{}', DATE '{}')".format(waiterNo, waiterName, date)
+        self.sql(sql)
+        self.conn.commit()
+
+    def insert_customer(self, customerNo, customerName, birthday, phone, email):
+        sql = "INSERT INTO Customer VALUES ('{}', '{}', DATE '{}', {}, '{}')".format(customerNo, customerName, birthday, phone, email)
+        self.sql(sql)
+        self.conn.commit()
+
+    def insert_dish(self, dishNo, dishName, dishPrice, dishDescription="", photo='NULL'):
+        sql = "INSERT INTO Dish VALUES ('{}', '{}', {}, '{}', {})".format(dishNo, dishName, dishPrice, dishDescription, photo)
+        self.sql(sql)
+        self.conn.commit()
+
+    def insert_order(self, orderNo, customerNo, waiterNo, ordertime, totalPrice, status):
+        sql = "INSERT INTO Orders VALUES ('{}', '{}', '{}', TIMESTAMP '{}', {}, '{}')".format(orderNo, customerNo, waiterNo, ordertime, totalPrice, status)
+        self.sql(sql)
+        self.conn.commit()
+
+    def insert_cookfood(self, dishNo, cookNo, cookfoodtime):
+        sql = "INSERT INTO CookFood VALUES('{}', '{}', TIMESTAMP '{}')".format(dishNo, cookNo, cookfoodtime)
+        self.sql(sql)
+        self.conn.commit()
 
 if __name__ == "__main__":
     dbms = DBMS("166.111.71.220", "1521", "dbta")

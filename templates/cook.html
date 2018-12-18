@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Welcome Cook [{{ id }}]</title>
+    <title>Welcome Cook [{{ thisid }}]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -36,7 +36,7 @@
           <div class="col-5 col-md-3">
           </div>
           <div class="col-2 col-md-6 text-center">
-            <a class="site-logo">欢迎我们的大厨{{ id }}</a>
+            <a class="site-logo">欢迎我们的大厨{{ thisid }}</a>
           </div>
           <div class="col-5 col-md-3 text-right menu-burger-wrap">
           </div>
@@ -50,48 +50,26 @@
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-md-10 p-5 form-wrap">
-                <form action="data_cook" method="post">
+                <form action="../data_cook/{{ thisid }}" method="post">
                   <div class="row mb-4">
                     <div class="form-group col-md-4">
-                      <label for="name" class="label">Name</label>
+                      <label for="name" class="label">菜品编号</label>
                       <div class="form-field-icon-wrap">
-                        <span class="icon ion-android-person"></span>
+                        <span class="icon ion-android-cart"></span>
                         <input type="text" class="form-control" id="name" name="id">
-                      </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label for="email" class="label">Email</label>
-                      <div class="form-field-icon-wrap">
-                        <span class="icon ion-email"></span>
-                        <input type="email" class="form-control" id="email" name="email">
-                      </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label for="phone" class="label">Phone</label>
-                      <div class="form-field-icon-wrap">
-                        <span class="icon ion-android-call"></span>
-                        <input type="text" class="form-control" id="phone" name="phone">
                       </div>
                     </div>
 
                     <div class="form-group col-md-4">
-                      <label for="persons" class="label">Number of Persons</label>
+                      <label for="persons" class="label">更改状态</label>
                       <div class="form-field-icon-wrap">
                         <span class="icon ion-android-arrow-dropdown"></span>
                         <select id="persons" class="form-control" name="state">
-                          <option value="">1 person</option>
-                          <option value="">2 persons</option>
-                          <option value="">3 persons</option>
-                          <option value="">4 persons</option>
-                          <option value="">5+ persons</option>
+                          <option value="">未处理</option>
+                          <option value="">制作中</option>
+                          <option value="">已完成</option>
+                          <option value="">已取走</option>
                         </select>
-                      </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label for="date" class="label">Date</label>
-                      <div class="form-field-icon-wrap">
-                        <span class="icon ion-calendar"></span>
-                        <input type="text" class="form-control" id="date">
                       </div>
                     </div>
                     <div class="form-group col-md-4">
@@ -142,7 +120,19 @@
     <script src="{{url_for('static', filename='js/jquery.stellar.min.js')}}"></script>
 
     <script src="{{url_for('static', filename='js/aos.js')}}"></script>
-
+    <script src="{{url_for('static', filename='js/table.js')}}"></script>
     <script src="{{url_for('static', filename='js/main.js')}}"></script>
   </body>
 </html>
+
+
+$.ajax({
+    url: "/your_route",
+    type: "POST",
+    contentType: "application/json;charset=UTF-8",
+    dataType: "json",
+    data: JSON.stringify({html_data: yourlist}),
+    success: function(response) {
+        console.log(response);
+    },
+});
