@@ -36,57 +36,79 @@
           <div class="col-5 col-md-3">
           </div>
           <div class="col-2 col-md-6 text-center">
-            <a class="site-logo">欢迎我们的大厨{{ thisid }}</a>
+            <a class="site-logo">欢迎我们的大厨{{ identity }} （工作证号：{{ thisid }}）</a>
           </div>
           <div class="col-5 col-md-3 text-right menu-burger-wrap">
           </div>
         </div>
-       
-      </header> <!-- site-header -->
 
+      </header> <!-- site-header -->
 
 
         <div class="section" data-aos="fade-up">
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-md-10 p-5 form-wrap">
-                <form action="../data_cook/{{ thisid }}" method="post">
                   <div class="row mb-4">
-                    <div class="form-group col-md-4">
-                      <label for="name" class="label">菜品编号</label>
-                      <div class="form-field-icon-wrap">
-                        <span class="icon ion-android-cart"></span>
-                        <input type="text" class="form-control" id="name" name="id">
-                      </div>
-                    </div>
 
-                    <div class="form-group col-md-4">
-                      <label for="persons" class="label">更改状态</label>
-                      <div class="form-field-icon-wrap">
-                        <span class="icon ion-android-arrow-dropdown"></span>
-                        <select id="persons" class="form-control" name="state">
-                          <option value="">未处理</option>
-                          <option value="">制作中</option>
-                          <option value="">已完成</option>
-                          <option value="">已取走</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label for="time" class="label">Time</label>
-                      <div class="form-field-icon-wrap">
-                        <span class="icon ion-android-time"></span>
-                        <input type="text" class="form-control" id="time">
-                      </div>
-                    </div>
+                  <div class="table-responsive">
+                      <table align="center" class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">菜品编号</th>
+                                <th scope="col">订单编号</th>
+                                <th scope="col">菜品名称</th>
+                                <th scope="col">下单时间</th>
+                                <th scope="col">菜品状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in dishes %}
+                            <tr>
+                                <td>{{ x[0] }}</td><td>{{ x[1] }}</td><td>{{ x[2]}}</td><td>{{ x[3] }}</td>
+                                {% if x[4]=="A" %}
+                                    <td>未处理</td>
+                                {% endif %}
+                                {% if x[4]=="B" %}
+                                    <td>制作完</td>
+                                {% endif %}
+                                {% if x[4]=="C" %}
+                                    <td>已上桌</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
                   </div>
-                  <div class="row justify-content-center">
-                    <div class="col-md-4">
-                      <input type="submit" class="btn btn-primary btn-outline-primary btn-block" value="Submit">
-                      <!-- <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p> -->
-                    </div>
-                  </div>
+
+
+                  <form action="../data_cook/{{ thisid }}" method="post">
+                      <div class="row justify-content-center">
+                        <div class="form-group col-md-4">
+                          <div class="form-field-icon-wrap">
+                            <span class="icon ion-android-cart"></span>
+                            <input placeholder="菜品编号" type="text" class="form-control" id="name" name="dishid">
+                          </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <div class="form-field-icon-wrap">
+                            <span class="icon ion-android-cart"></span>
+                            <input placeholder="订单编号" type="text" class="form-control" id="name" name="orderid">
+                          </div>
+                        </div>
+
+                          <div class="form-group col-md-4">
+                            <input type="submit" class="btn btn-primary btn-outline-primary btn-block" value="Submit">
+                          <!-- <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p> -->
+                          </div>
+                      </div>
+                        <div class="row justify-content-center">
+
+                        </div>
                 </form>
+
+                  </div>
               </div>
             </div>
           </div>
@@ -124,15 +146,3 @@
     <script src="{{url_for('static', filename='js/main.js')}}"></script>
   </body>
 </html>
-
-
-$.ajax({
-    url: "/your_route",
-    type: "POST",
-    contentType: "application/json;charset=UTF-8",
-    dataType: "json",
-    data: JSON.stringify({html_data: yourlist}),
-    success: function(response) {
-        console.log(response);
-    },
-});

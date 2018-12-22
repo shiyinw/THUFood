@@ -44,15 +44,15 @@ if False:
     dbms.insert_customer("customer0", "Lily", "1996-07-13", "18800000000", "xxx@126.com")
 
 
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Dish")
     except:
         pass
     init_dish = "CREATE TABLE Dish (dishNo varchar2(20) NOT NULL, dishName varchar2(20) NOT NULL, dishPrice number(5) NOT NULL, dishDescription varchar2(100), photo blob, PRIMARY KEY(dishNo))"
     dbms.sql(init_dish)
-    dbms.insert_dish(dishNo="peking0", dishName="Peking Duck", dishPrice=100, dishDescription="Good! Perfect!")
-    dbms.insert_dish(dishNo="peking1", dishName="LuZhu", dishPrice=20, dishDescription="Good! Perfect! I like it!")
+    dbms.insert_dish(dishNo="dish0", dishName="Peking Duck", dishPrice=100, dishDescription="Good! Perfect!")
+    dbms.insert_dish(dishNo="dish1", dishName="LuZhu", dishPrice=20, dishDescription="Good! Perfect! I like it!")
 
 
 if False:
@@ -70,9 +70,9 @@ if False:
         dbms.sql("DROP TABLE CookFood")
     except:
         pass
-    init_cookfood = "CREATE TABLE CookFood (dishNo varchar2(10), cookNo varchar2(10), cookfoodtime timestamp, PRIMARY KEY(dishNo, cookNo))"
+    init_cookfood = "CREATE TABLE CookFood (dishNo varchar2(10), cookNo varchar2(10), orderNo varchar2(20), cookfoodtime timestamp, status char(1) NOT NULL, PRIMARY KEY(dishNo, cookNo))"
     dbms.sql(init_cookfood)
-    dbms.insert_cookfood(dishNo="dish0", cookNo="cook0", cookfoodtime="2018-12-31  12:05:34")
+    dbms.insert_cookfood(dishNo="dish0", cookNo="cook0", orderNo="order0", cookfoodtime="2018-12-31  12:05:34", status="A")
 
 
 # dbms.sql("DROP TABLE Comment")

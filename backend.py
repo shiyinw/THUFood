@@ -14,7 +14,10 @@ class DBMS(object):
 
     def query_waiter(self, id):
         sql = "SELECT * FROM Waiter WHERE waiterNo='{}'".format(id)
-        return self.sql(sql).fetchall()
+        identity = self.sql(sql).fetchone()
+        sql = "SELECT CookFood.dishNo, CookFood.orderNo, Dish.dishName, Orders.ordertime, CookFood.status, Orders.waiterNo FROM CookFood, Dish, Orders WHERE CookFood.orderNo=Orders.orderNo AND Orders.waiterNo='{}' AND CookFood.dishNo=Dish.dishNo ORDER BY status, cookfoodtime DESC".format(id)
+        dishes = self.sql(sql).fetchall()
+        return identity, dishes
 
     def query_customer(self, id):
         sql = "SELECT * FROM Customer WHERE customerNo='{}'".format(id)
@@ -22,7 +25,10 @@ class DBMS(object):
 
     def query_cook(self, id):
         sql = "SELECT * FROM Cook WHERE cookNo='{}'".format(id)
-        return self.sql(sql).fetchall()
+        identity = self.sql(sql).fetchone()
+        sql = "SELECT CookFood.dishNo, orderNo, dishName, cookfoodtime, status FROM CookFood, Dish WHERE CookFood.dishNo=Dish.dishNo AND cookNo='{}' ORDER BY status, cookfoodtime DESC".format(id)
+        dishes = self.sql(sql).fetchall()
+        return identity, dishes
 
     def query_dish(self, id):
         sql = "SELECT * FROM Dish WHERE dishNo='{}'".format(id)
@@ -74,8 +80,19 @@ class DBMS(object):
         self.sql(sql)
         self.conn.commit()
 
-    def insert_cookfood(self, dishNo, cookNo, cookfoodtime):
-        sql = "INSERT INTO CookFood VALUES('{}', '{}', TIMESTAMP '{}')".format(dishNo, cookNo, cookfoodtime)
+    def insert_cookfood(self, dishNo, cookNo, orderNo, cookfoodtime, status):
+        sql = "INSERT INTO CookFood VALUES('{}', '{}', '{}', TIMESTAMP '{}', '{}')".format(dishNo, cookNo, orderNo, cookfoodtime, status)
+        self.sql(sql)
+        self.conn.commit()
+
+    def action_cook(self, dishid, orderid):
+        sql = "UPDATE CookFood SET status='B' WHERE dishNo='{}' AND orderNo='{}'".format(dishid, orderid)
+        self.sql(sql)
+        self.conn.commit()
+
+
+    def action_waiter(self, dishid, orderid):
+        sql = "UPDATE CookFood SET status='C' WHERE dishNo='{}' AND orderNo='{}'".format(dishid, orderid)
         self.sql(sql)
         self.conn.commit()
 

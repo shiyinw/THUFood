@@ -14,11 +14,24 @@ def hello_world():
 @app.route('/data_cook/<cook_id>', methods=['POST', 'GET'])
 def data_cook(cook_id):
     if request.method=="POST":
-        dish_id = request.form['id']
-        dish_state = request.form['state']
-    dishes = dbms.query_cook_dishes(cook_id)
+        dish_id = request.form['dishid']
+        order_id = request.form['orderid']
+        dbms.action_cook(dish_id, order_id)
+    identity, dishes = dbms.query_cook(cook_id)
+    ident = identity[1]
+    return render_template("cook.html", identity=ident, dishes=dishes, thisid=cook_id)
+
+@app.route('/data_waiter/<waiter_id>', methods=['POST', 'GET'])
+def data_waiter(waiter_id):
+    if request.method=="POST":
+        dish_id = request.form['dishid']
+        order_id = request.form['orderid']
+        dbms.action_waiter(dish_id, order_id)
+    identity, dishes = dbms.query_waiter(waiter_id)
+    print(identity)
     print(dishes)
-    return render_template("cook.html", dishes=dishes, thisid=cook_id)
+    ident = identity[1]
+    return render_template("waiter.html", identity=ident, dishes=dishes, thisid=waiter_id)
 
 @app.route('/cook', methods=['POST', 'GET'])
 def login_cook():
@@ -28,7 +41,7 @@ def login_cook():
         if(len(id)<=10 and len(pw)<=20):
             if(dbms.validate(id, pw, "c")):
                 print("Login with cook: ", id)
-                return render_template('cook.html', thisid=id)
+                return render_template('cook.html', thisid=id, identity=id)
         return render_template('login_cook.html', error=True)
     return render_template("login_cook.html")
 
