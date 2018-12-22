@@ -4,7 +4,7 @@ dbms = DBMS("166.111.71.220", "1521", "dbta")
 dbms.login(user="s2016011246", password="19980211")
 
 # Password
-if False:
+if True:
     dbms.sql("DROP TABLE Password")
     init_password = "CREATE TABLE Password (username  varchar2(10) NOT NULL, password varchar2(20) NOT NULL, type char(1) NOT NULL)"
     dbms.sql(init_password)
@@ -14,7 +14,7 @@ if False:
     dbms.insert_user("customer0", "customer0", "x")
 
 # Cook
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Cook")
     except:
@@ -24,7 +24,7 @@ if False:
     dbms.insert_cook("cook0", "Hellen", "2018-01-01")
 
 # Waiter
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Waiter")
     except:
@@ -34,7 +34,7 @@ if False:
     dbms.insert_waiter("waiter0", "Julia", "2016-06-13")
 
 # Customer
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Customer")
     except:
@@ -44,7 +44,7 @@ if False:
     dbms.insert_customer("customer0", "Lily", "1996-07-13", "18800000000", "xxx@126.com")
 
 
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Dish")
     except:
@@ -55,7 +55,7 @@ if False:
     dbms.insert_dish(dishNo="dish1", dishName="LuZhu", dishPrice=20, dishDescription="Good! Perfect! I like it!")
 
 
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Orders")
     except:
@@ -65,7 +65,7 @@ if False:
     dbms.insert_order(orderNo="order0", customerNo="customer0", waiterNo="waiter0", ordertime="2018-12-31  12:05:34", totalPrice=198, status="IN")
 
 
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE CookFood")
     except:
@@ -74,7 +74,7 @@ if False:
     dbms.sql(init_cookfood)
     dbms.insert_cookfood(dishNo="dish0", cookNo="cook0", orderNo="order0", cookfoodtime="2018-12-31  12:05:34", status="A")
 
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Comments")
     except:

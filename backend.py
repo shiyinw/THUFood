@@ -4,10 +4,16 @@ import datetime
 class DBMS(object):
     def __init__(self, addr, port, name):
         self.dsnStr = cx_Oracle.makedsn(addr, port, name)
+
     def login(self, user, password):
         assert self.dsnStr, "Connection Error"
         self.conn = cx_Oracle.connect(user, password, dsn=self.dsnStr)
         self.c = self.conn.cursor()
+
+    def delete_order(self, id):
+        self.sql("DELETE FROM Orders WHERE orderNo='{}'".format(id))
+        self.sql("DELETE FROM CookFood WHERE orderNo='{}'".format(id))
+        self.conn.commit()
 
     def sql(self, sql):
         print("SQL:", sql)

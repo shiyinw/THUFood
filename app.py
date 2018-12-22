@@ -10,6 +10,26 @@ app = Flask(__name__, static_url_path='/templates')
 def hello_world():
     return render_template('index.html')
 
+@app.route('/data_admin/<admin_id>', methods=['POST', 'GET'])
+def data_admin(admin_id):
+    output = ""
+    if request.method=="POST":
+        try:
+            output = dbms.sql(request.form["sql"]).fetchall()
+            dbms.conn.commit()
+        except Exception as e:
+            output = "*"*20+'\n' + "Error:" + request.form["sql"] + '\n' + str(e) + '\n' + "*" * 20
+    cook = dbms.sql("SELECT * FROM Cook").fetchall()
+    customer = dbms.sql("SELECT * FROM Customer").fetchall()
+    waiter = dbms.sql("SELECT * FROM Waiter").fetchall()
+    dish = dbms.sql("SELECT * FROM Dish").fetchall()
+    orders = dbms.sql("SELECT * FROM Orders").fetchall()
+    cookfood = dbms.sql("SELECT * FROM CookFood").fetchall()
+    comments = dbms.sql("SELECT * FROM Comments").fetchall()
+    pw = dbms.sql("SELECT * FROM Password").fetchall()
+
+    return render_template("admin.html", output=output, thisid=admin_id, cook=cook, customer=customer, waiter=waiter, dish=dish, orders=orders, cookfood=cookfood, comments=comments, pw=pw)
+
 
 @app.route('/data_cook/<cook_id>', methods=['POST', 'GET'])
 def data_cook(cook_id):
@@ -26,22 +46,22 @@ def data_waiter(waiter_id):
     if request.method=="POST":
         if(request.form["customerid"]!="" and request.form["customername"]!=""):
             if(request.form["birthday"]!=""):
-                dbms.insert_customer(customerNo=request.form["customerid"], customerName=request.form["customername"],
-                             birthday=request.form["birthday"], phone=request.form["phone"], email=request.form["email"])
+                try:
+                    dbms.insert_customer(customerNo=request.form["customerid"], customerName=request.form["customername"],
+                            birthday=request.form["birthday"], phone=request.form["phone"], email=request.form["email"])
+                except:
+                    pass
             else:
-                dbms.insert_customer(customerNo=request.form["customerid"], customerName=request.form["customername"],
+                try:
+                    dbms.insert_customer(customerNo=request.form["customerid"], customerName=request.form["customername"],
                                      phone=request.form["phone"], email=request.form["email"])
-        dish_id = request.form['dishid']
-        order_id = request.form['orderid']
-        dbms.action_waiter(dish_id, order_id)
-    identity, dishes = dbms.query_waiter(waiter_id)
-    ident = identity[1]
-    return render_template("waiter.html", identity=ident, dishes=dishes, thisid=waiter_id)
-
-
-@app.route('/data_waiter2/<waiter_id>', methods=['POST', 'GET'])
-def data_waiter2(waiter_id):
-    if request.method=="POST":
+                except:
+                    pass
+        if(request.form["delete"]!=""):
+            try:
+                dbms.delete_order(request.form["delete"])
+            except:
+                pass
         dish_id = request.form['dishid']
         order_id = request.form['orderid']
         dbms.action_waiter(dish_id, order_id)
@@ -96,7 +116,18 @@ def login_admin():
         if(len(id)<=10 and len(pw)<=20):
             if(dbms.validate(id, pw, "a")):
                 print("Login with admin: ", id)
-                return render_template('admin.html', thisid=id)
+                cook = dbms.sql("SELECT * FROM Cook").fetchall()
+                customer = dbms.sql("SELECT * FROM Customer").fetchall()
+                waiter = dbms.sql("SELECT * FROM Waiter").fetchall()
+                dish = dbms.sql("SELECT * FROM Dish").fetchall()
+                orders = dbms.sql("SELECT * FROM Orders").fetchall()
+                cookfood = dbms.sql("SELECT * FROM CookFood").fetchall()
+                comments = dbms.sql("SELECT * FROM Comments").fetchall()
+                pw = dbms.sql("SELECT * FROM Password").fetchall()
+
+                return render_template("admin.html", thisid=id, cook=cook, customer=customer, waiter=waiter,
+                                       dish=dish, orders=orders, cookfood=cookfood, comments=comments, pw=pw)
+
         return render_template('login_admin.html', error=True)
     return render_template("login_admin.html", error=False)
 
