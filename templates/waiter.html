@@ -45,6 +45,64 @@
       </header> <!-- site-header -->
 
 
+        <form action="../data_waiter/{{ thisid }}" method="post">
+        <div class="section" data-aos="fade-up">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-md-10 p-5 form-wrap">
+                  <div class="row mb-4">
+
+
+
+                      <div class="row justify-content-center">
+                        <div class="form-group col-md-4">
+                          <div class="form-field-icon-wrap">
+                            <input placeholder="顾客编号" type="text" class="form-control" id="name" name="customerid">
+                          </div>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <div class="form-field-icon-wrap">
+                            <input placeholder="顾客姓名" type="text" class="form-control" id="name" name="customername">
+                          </div>
+                        </div>
+
+
+                          <div class="form-group col-md-4">
+                          <div class="form-field-icon-wrap">
+                            <input placeholder="生日" type="text" class="form-control" id="name" name="birthday">
+                          </div>
+                        </div>
+
+
+                          <div class="form-group col-md-4">
+                          <div class="form-field-icon-wrap">
+                            <input placeholder="联系电话" type="text" class="form-control" id="name" name="phone">
+                          </div>
+                        </div>
+
+                          <div class="form-group col-md-4">
+                          <div class="form-field-icon-wrap">
+                            <input placeholder="电子邮箱" type="text" class="form-control" id="name" name="email">
+                          </div>
+                        </div>
+
+                          <div class="form-group col-md-4">
+                            <input type="submit" class="btn btn-primary btn-outline-primary btn-block" value="Submit">
+                          <!-- <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p> -->
+                          </div>
+                      </div>
+                        <div class="row justify-content-center">
+
+                        </div>
+
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- .section -->
+
+
         <div class="section" data-aos="fade-up">
           <div class="container">
             <div class="row justify-content-center">
@@ -82,18 +140,15 @@
                   </div>
 
 
-                  <form action="../data_waiter/{{ thisid }}" method="post">
                       <div class="row justify-content-center">
                         <div class="form-group col-md-4">
                           <div class="form-field-icon-wrap">
-                            <span class="icon ion-android-cart"></span>
                             <input placeholder="菜品编号" type="text" class="form-control" id="name" name="dishid">
                           </div>
                         </div>
 
                         <div class="form-group col-md-4">
                           <div class="form-field-icon-wrap">
-                            <span class="icon ion-android-cart"></span>
                             <input placeholder="订单编号" type="text" class="form-control" id="name" name="orderid">
                           </div>
                         </div>
@@ -106,13 +161,15 @@
                         <div class="row justify-content-center">
 
                         </div>
-                </form>
+
 
                   </div>
               </div>
             </div>
           </div>
         </div> <!-- .section -->
+
+        </form>
 
       <div class="site-footer-copyright">
         <div class="container">

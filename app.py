@@ -24,12 +24,28 @@ def data_cook(cook_id):
 @app.route('/data_waiter/<waiter_id>', methods=['POST', 'GET'])
 def data_waiter(waiter_id):
     if request.method=="POST":
+        if(request.form["customerid"]!="" and request.form["customername"]!=""):
+            if(request.form["birthday"]!=""):
+                dbms.insert_customer(customerNo=request.form["customerid"], customerName=request.form["customername"],
+                             birthday=request.form["birthday"], phone=request.form["phone"], email=request.form["email"])
+            else:
+                dbms.insert_customer(customerNo=request.form["customerid"], customerName=request.form["customername"],
+                                     phone=request.form["phone"], email=request.form["email"])
         dish_id = request.form['dishid']
         order_id = request.form['orderid']
         dbms.action_waiter(dish_id, order_id)
     identity, dishes = dbms.query_waiter(waiter_id)
-    print(identity)
-    print(dishes)
+    ident = identity[1]
+    return render_template("waiter.html", identity=ident, dishes=dishes, thisid=waiter_id)
+
+
+@app.route('/data_waiter2/<waiter_id>', methods=['POST', 'GET'])
+def data_waiter2(waiter_id):
+    if request.method=="POST":
+        dish_id = request.form['dishid']
+        order_id = request.form['orderid']
+        dbms.action_waiter(dish_id, order_id)
+    identity, dishes = dbms.query_waiter(waiter_id)
     ident = identity[1]
     return render_template("waiter.html", identity=ident, dishes=dishes, thisid=waiter_id)
 
@@ -41,7 +57,8 @@ def login_cook():
         if(len(id)<=10 and len(pw)<=20):
             if(dbms.validate(id, pw, "c")):
                 print("Login with cook: ", id)
-                return render_template('cook.html', thisid=id, identity=id)
+                identity, dishes = dbms.query_cook(id)
+                return render_template('cook.html', thisid=id, identity=identity[1], dishes=dishes)
         return render_template('login_cook.html', error=True)
     return render_template("login_cook.html")
 
@@ -66,7 +83,8 @@ def login_waiter():
         if(len(id)<=10 and len(pw)<=20):
             if(dbms.validate(id, pw, "w")):
                 print("Login with waiter: ", id)
-                return render_template('waiter.html', thisid=id)
+                identity, dishes = dbms.query_waiter(id)
+                return render_template('waiter.html', thisid=id, dishes=dishes)
         return render_template('login_waiter.html', error=True)
     return render_template("login_waiter.html", error=False)
 

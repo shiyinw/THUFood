@@ -6,7 +6,7 @@ dbms.login(user="s2016011246", password="19980211")
 # Password
 if False:
     dbms.sql("DROP TABLE Password")
-    init_password = "CREATE TABLE Password (username  varchar2(10) NOT NULL, password varchar2(20) NOT NULL, type char(1) NOT NULL, PRIMARY KEY (username, password))"
+    init_password = "CREATE TABLE Password (username  varchar2(10) NOT NULL, password varchar2(20) NOT NULL, type char(1) NOT NULL)"
     dbms.sql(init_password)
     dbms.insert_user("cook0", "cook0", "c")
     dbms.insert_user("waiter0", "waiter0", "w")
@@ -39,12 +39,12 @@ if False:
         dbms.sql("DROP TABLE Customer")
     except:
         pass
-    init_customer = "CREATE TABLE Customer (customerNo varchar2(20) NOT NULL, customName varchar2(10), birthday date, phone number(11, 0), email varchar2(50), PRIMARY KEY(customerNo))"
+    init_customer = "CREATE TABLE Customer (customerNo varchar2(20) NOT NULL, customName varchar2(50), birthday date, phone number(11, 0), email varchar2(50), PRIMARY KEY(customerNo))"
     dbms.sql(init_customer)
     dbms.insert_customer("customer0", "Lily", "1996-07-13", "18800000000", "xxx@126.com")
 
 
-if True:
+if False:
     try:
         dbms.sql("DROP TABLE Dish")
     except:
@@ -73,6 +73,15 @@ if False:
     init_cookfood = "CREATE TABLE CookFood (dishNo varchar2(10), cookNo varchar2(10), orderNo varchar2(20), cookfoodtime timestamp, status char(1) NOT NULL, PRIMARY KEY(dishNo, cookNo))"
     dbms.sql(init_cookfood)
     dbms.insert_cookfood(dishNo="dish0", cookNo="cook0", orderNo="order0", cookfoodtime="2018-12-31  12:05:34", status="A")
+
+if False:
+    try:
+        dbms.sql("DROP TABLE Comments")
+    except:
+        pass
+    init_comment = "CREATE TABLE Comments (dishNo varchar2(20), customerNo varchar2(20), content varchar2(1000), PRIMARY KEY(dishNo, customerNo))"
+    dbms.sql(init_comment)
+    dbms.insert_comment(dishNo="dish0", customerNo="customer0", content="Not bad.")
 
 
 # dbms.sql("DROP TABLE Comment")

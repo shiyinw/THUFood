@@ -1,4 +1,5 @@
 import cx_Oracle
+import datetime
 
 class DBMS(object):
     def __init__(self, addr, port, name):
@@ -55,12 +56,16 @@ class DBMS(object):
         self.sql(sql)
         self.conn.commit()
 
-    def insert_cook(self, cookNo, cookName, date):
+    def insert_cook(self, cookNo, cookName, date=None):
+        if(date==None):
+            date = datetime.datetime.today().strftime('%Y-%m-%d')
         sql = "INSERT INTO Cook VALUES ('{}', '{}', DATE '{}')".format(cookNo, cookName, date)
         self.sql(sql)
         self.conn.commit()
 
-    def insert_waiter(self, waiterNo, waiterName, date):
+    def insert_waiter(self, waiterNo, waiterName, date=None):
+        if (date == None):
+            date = datetime.datetime.today().strftime('%Y-%m-%d')
         sql = "INSERT INTO Waiter VALUES ('{}', '{}', DATE '{}')".format(waiterNo, waiterName, date)
         self.sql(sql)
         self.conn.commit()
@@ -68,6 +73,7 @@ class DBMS(object):
     def insert_customer(self, customerNo, customerName, birthday, phone, email):
         sql = "INSERT INTO Customer VALUES ('{}', '{}', DATE '{}', {}, '{}')".format(customerNo, customerName, birthday, phone, email)
         self.sql(sql)
+        self.insert_user(username=customerNo, password=customerNo, type="x")
         self.conn.commit()
 
     def insert_dish(self, dishNo, dishName, dishPrice, dishDescription="", photo='NULL'):
@@ -85,6 +91,11 @@ class DBMS(object):
         self.sql(sql)
         self.conn.commit()
 
+    def insert_comment(self, dishNo, customerNo, content):
+        sql = "INSERT INTO Comments VALUES('{}', '{}', '{}')".format(dishNo, customerNo, content)
+        self.sql(sql)
+        self.conn.commit()
+
     def action_cook(self, dishid, orderid):
         sql = "UPDATE CookFood SET status='B' WHERE dishNo='{}' AND orderNo='{}'".format(dishid, orderid)
         self.sql(sql)
@@ -92,7 +103,7 @@ class DBMS(object):
 
 
     def action_waiter(self, dishid, orderid):
-        sql = "UPDATE CookFood SET status='C' WHERE dishNo='{}' AND orderNo='{}'".format(dishid, orderid)
+        sql = "UPDATE CookFood SET status='C' WHERE dishNo='{}' AND orderNo='{}' AND status='B'".format(dishid, orderid)
         self.sql(sql)
         self.conn.commit()
 
@@ -105,9 +116,8 @@ if __name__ == "__main__":
     for i in x:
         print(i)
 
-    x = dbms.sql("SELECT owner, table_name FROM dba_tables")
-    print(x.description)
-
     for i in x:
         print(i)
 
+
+    print(datetime.datetime.today())
