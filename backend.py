@@ -7,7 +7,7 @@ class DBMS(object):
 
     def login(self, user, password):
         assert self.dsnStr, "Connection Error"
-        self.conn = cx_Oracle.connect(user, password, dsn=self.dsnStr)
+        self.conn = cx_Oracle.connect(user, password, dsn=self.dsnStr, encoding = "UTF-8", nencoding = "UTF-8")
         self.c = self.conn.cursor()
 
     def delete_order(self, id):
@@ -82,8 +82,8 @@ class DBMS(object):
         self.insert_user(username=customerNo, password=customerNo, type="x")
         self.conn.commit()
 
-    def insert_dish(self, dishNo, dishName, dishPrice, dishDescription="", photo='NULL'):
-        sql = "INSERT INTO Dish VALUES ('{}', '{}', {}, '{}', {})".format(dishNo, dishName, dishPrice, dishDescription, photo)
+    def insert_dish(self, dishNo, dishName, dishPrice, dishDescription=""):
+        sql = "INSERT INTO Dish VALUES ('{}', N'{}', {}, N'{}')".format(dishNo, dishName, dishPrice, dishDescription)
         self.sql(sql)
         self.conn.commit()
 
@@ -92,10 +92,16 @@ class DBMS(object):
         self.sql(sql)
         self.conn.commit()
 
-    def insert_cookfood(self, dishNo, cookNo, orderNo, cookfoodtime, status):
-        sql = "INSERT INTO CookFood VALUES('{}', '{}', '{}', TIMESTAMP '{}', '{}')".format(dishNo, cookNo, orderNo, cookfoodtime, status)
-        self.sql(sql)
-        self.conn.commit()
+    def insert_cookfood(self, dishNo, cookNo, orderNo, status, cookfoodtime=None):
+        if (cookfoodtime == None):
+            cookfoodtime = datetime.datetime.now()
+        try:
+            sql = "INSERT INTO CookFood VALUES('{}', '{}', '{}', TIMESTAMP '{}', '{}')".format(dishNo, cookNo, orderNo, cookfoodtime, status)
+            self.sql(sql)
+            self.conn.commit()
+        except Exception as e:
+            print(e)
+
 
     def insert_comment(self, dishNo, customerNo, content):
         sql = "INSERT INTO Comments VALUES('{}', '{}', '{}')".format(dishNo, customerNo, content)

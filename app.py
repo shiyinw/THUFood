@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, json, url_for, redirect
 from backend import *
+import datetime
 
 dbms = DBMS("166.111.71.220", "1521", "dbta")
 dbms.login(user="s2016011246", password="19980211")
@@ -40,6 +41,25 @@ def data_cook(cook_id):
     identity, dishes = dbms.query_cook(cook_id)
     ident = identity[1]
     return render_template("cook.html", identity=ident, dishes=dishes, thisid=cook_id)
+
+@app.route('/data_customer/<customer_id>', methods=['POST', 'GET'])
+def data_customer(customer_id):
+    dishes = dbms.sql("SELECT * FROM Dish").fetchall()
+    return render_template('customer.html', thisid=customer_id, dishes=dishes)
+
+@app.route('/customer_confirm/<customer_id>', methods=["POST"])
+def confirm(customer_id):
+    ordered = request.form["text"].split()
+    cart = []
+    totalprice = 0
+    store = ""
+    for i in ordered:
+        item = dbms.sql("SELECT * FROM Dish WHERE dishNo='{}'".format(i)).fetchone()
+        if(len(item)==4):
+            cart.append(item)
+            totalprice += int(item[2])
+            store += str(item[0]) + "&"
+    return render_template("confirm.html", store=store, cart=cart, totalprice=totalprice, order="order"+str(customer_id[8:]), thisid=customer_id)
 
 @app.route('/data_waiter/<waiter_id>', methods=['POST', 'GET'])
 def data_waiter(waiter_id):
@@ -82,6 +102,23 @@ def login_cook():
         return render_template('login_cook.html', error=True)
     return render_template("login_cook.html")
 
+@app.route("/comment/<customer_id>/<cart>", methods=["POST"])
+def comment(customer_id, cart):
+    orderid = "order" + str(customer_id[8:])
+
+    for i in cart.split("&")[:-1]:
+        dbms.insert_cookfood(cookNo="cook0", dishNo=i, orderNo=orderid, status="A")
+
+    dishes = dbms.sql("SELECT Dish.dishNo, dishName, cookName, dishPrice, CookFood.status FROM CookFood, Dish, Cook WHERE Cook.cookNo=CookFood.cookNo AND orderNo='{}' AND Dish.dishNo=CookFood.dishNo".format(orderid)).fetchall()
+    print(dishes)
+    return render_template("comment.html", thisid=customer_id, dishes=dishes)
+
+@app.route("/thank/<customer_id>", methods=["POST"])
+def thank(customer_id):
+    return render_template("thank.html")
+
+
+
 @app.route('/customer', methods=['POST', 'GET'])
 def login_customer():
     if request.method=="POST":
@@ -90,7 +127,8 @@ def login_customer():
         if(len(id)<=20 and len(pw)<=20):
             if(dbms.validate(id, pw, "x")):
                 print("Login with customer: ", id)
-                return render_template('customer.html', thisid=id)
+                dishes = dbms.sql("SELECT * FROM Dish").fetchall()
+                return render_template('customer.html', thisid=id, dishes=dishes)
         return render_template('login_customer.html', error=True)
     return render_template("login_customer.html", error=False)
 

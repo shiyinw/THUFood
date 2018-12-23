@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>THU Restaurant Management System</title>
+    <title>Customer</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -30,90 +30,63 @@
 
     <div class="site-wrap">
 
-        <div class="section">
+
+      <header class="site-header">
+        <div class="row align-items-center">
+          <div class="col-5 col-md-3">
+          </div>
+          <div class="col-2 col-md-6 text-center">
+            <a class="site-logo">祝您用餐愉快</a>
+          </div>
+          <div class="col-5 col-md-3 text-right menu-burger-wrap">
+          </div>
+        </div>
+
+      </header> <!-- site-header -->
+
+
+
+        <div class="section" data-aos="fade-up">
           <div class="container">
             <div class="row justify-content-center">
-              <div class="col-md-7 text-center"  data-aos="fade-up">
-                <h2 class="mb-4">菜单</h2>
-                <p class="lead">请将所点的餐填入订单内</p>
+              <div class="col-md-10 p-5 form-wrap">
+                  <div class="row mb-4">
+
+                  <div class="table-responsive">
+                      <table align="center" class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">菜品编号</th>
+                                <th scope="col">菜品名称</th>
+                                <th scope="col">负责厨师</th>
+                                <th scope="col">菜品价格</th>
+                                <th scope="col">菜品状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in dishes %}
+                            <tr>
+                                <td>{{ x[0] }}</td><td>{{ x[1] }}</td><td>{{ x[2]}}</td><td>{{ x[3] }}</td>
+                                {% if x[4]=="A" %}
+                                    <td>未处理</td>
+                                {% endif %}
+                                {% if x[4]=="B" %}
+                                    <td>制作完</td>
+                                {% endif %}
+                                {% if x[4]=="C" %}
+                                    <td>已上桌</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                  </div>
+
+                  </div>
               </div>
             </div>
           </div>
         </div> <!-- .section -->
-
-        <div class="section pt-0 pb-0">
-
-          <div class="menus d-flex bg-light">
-
-              {% for x in dishes %}
-
-            <div class="d-flex item">
-              <div class="image order-2 order-md-1 order-lg-1 order-xl-2" style="background-image: url({{url_for('static', filename='img/menu/'+x[0]+".jpg")}});" data-aos="fade" data-aos-delay="500"></div>
-              <div class="text order-1 order-md-2 order-lg-2 order-xl-1">
-                <h3>{{ x[1] }}</h3>
-                <p>{{ x[0] }}</p><p>{{ x[3] }}</p>
-                <p class="price">¥{{ x[2] }}</p>
-              </div>
-            </div> <!-- .item -->
-
-              {% endfor %}
-
-          </div>
-        </div> <!-- .section -->
-
-
-    <form action="../customer_confirm/{{ thisid }}" method="post">
-
-        <input placeholder="burger1 drink1 sider1" style="width:100%;" type="text" class="form-control" id="name" name="text">
-        <input type="submit" class="btn btn-primary btn-outline-primary btn-block" value="提交订单">
-    </form>
-
-
-      </div> <!-- .main-wrap -->
-
-
-      <footer>
-        <div class="site-footer">
-          <div class="container">
-            <div class="row small-gutters mb-3">
-              <div class="col-md-3 col-lg-3 mb-3" data-aos="fade" data-aos-delay="100">
-                <div class="footer-widget">
-                  <h3>Address</h3>
-                  <p>X Restaurant, Haidian, Beijing, 100084</p>
-                </div>
-              </div>
-              <div class="col-md-3 col-lg-3 mb-3" data-aos="fade" data-aos-delay="200">
-                <div class="footer-widget">
-                    <h3>Breakfast Service</h3>
-                    <p>7:00am - 10:00am</p>
-                    <h3>Lunch Service</h3>
-                    <p>11:00am - 1:30pm</p>
-                    <h3>Dinner Service</h3>
-                    <p>5:00pm - 8:00pm</p>
-                </div>
-              </div>
-
-
-              <div class="col-md-3 col-lg-3 mb-3" data-aos="fade" data-aos-delay="300">
-                <div class="footer-widget footer-contact-widget">
-                  <h3>Contact Us</h3>
-                  <p class="contact-email">thuxfood@thufood.com</p>
-                </div>
-              </div>
-
-
-                 <div class="col-md-3 col-lg-3 mb-3" data-aos="fade" data-aos-delay="300">
-                <div class="footer-widget footer-contact-widget">
-                  <h3>Reservation</h3>
-                  <p class="contact-phone">4000-000-000</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      </footer>
 
       <div class="site-footer-copyright">
         <div class="container">
@@ -143,7 +116,7 @@
     <script src="{{url_for('static', filename='js/jquery.stellar.min.js')}}"></script>
 
     <script src="{{url_for('static', filename='js/aos.js')}}"></script>
-
+    <script src="{{url_for('static', filename='js/table.js')}}"></script>
     <script src="{{url_for('static', filename='js/main.js')}}"></script>
   </body>
 </html>
