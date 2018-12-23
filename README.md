@@ -1,5 +1,5 @@
 # THUFood
-A Restaurant Management System [Course Project for Database Course @ Tsinghua]
+A Restaurant Management System [Course Project for Database @ Tsinghua]
 
 ```bash
 pip3 install -r requirement.txt
