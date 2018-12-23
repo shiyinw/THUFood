@@ -6,7 +6,7 @@ dbms = DBMS("166.111.71.220", "1521", "dbta")
 dbms.login(user="s2016011246", password="19980211")
 
 # Password
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Password")
     except Exception as e:
@@ -19,7 +19,7 @@ if False:
     dbms.insert_user("customer0", "customer0", "x")
 
 # Cook
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Cook")
     except:
@@ -29,7 +29,7 @@ if False:
     dbms.insert_cook("cook0", "Hellen", "2018-01-01")
 
 # Waiter
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Waiter")
     except Exception as e:
@@ -40,7 +40,7 @@ if False:
     dbms.insert_waiter("waiter0", "Julia", "2016-06-13")
 
 # Customer
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Customer")
     except Exception as e:
@@ -78,15 +78,15 @@ if True:
     dbms.insert_dish(dishNo="sider4", dishName="炸鸡翅", dishPrice=16, dishDescription="Good! Perfect!")
 
 
-if False:
+if True:
     try:
         dbms.sql("DROP TABLE Orders")
     except Exception as e:
         print(e)
         pass
-    init_order = "CREATE TABLE Orders (orderNo varchar2(20) NOT NULL, customerNo varchar2(20) NOT NULL, waiterNo varchar2(10), ordertime timestamp, totalPrice number(5), status char(2), PRIMARY KEY(orderNo))"
+    init_order = "CREATE TABLE Orders (orderNo varchar2(20) NOT NULL, customerNo varchar2(20) NOT NULL, ordertime timestamp, totalPrice number(5), PRIMARY KEY(orderNo))"
     dbms.sql(init_order)
-    dbms.insert_order(orderNo="order0", customerNo="customer0", waiterNo="waiter0", ordertime="2018-12-31  12:05:34", totalPrice=198, status="IN")
+    dbms.insert_order(orderNo="order0", customerNo="customer0", ordertime="2018-12-31  12:05:34", totalPrice=198)
 
 
 if True:
@@ -94,7 +94,7 @@ if True:
         dbms.sql("DROP TABLE CookFood")
     except:
         pass
-    init_cookfood = "CREATE TABLE CookFood (dishNo varchar2(10), cookNo varchar2(10), orderNo varchar2(20), cookfoodtime timestamp, status char(1) NOT NULL, PRIMARY KEY(dishNo, cookNo))"
+    init_cookfood = "CREATE TABLE CookFood (dishNo varchar2(10), cookNo varchar2(10), orderNo varchar2(20), cookfoodtime timestamp, status char(1) NOT NULL)"
     dbms.sql(init_cookfood)
     dbms.insert_cookfood(dishNo="burger1", cookNo="cook0", orderNo="order0", cookfoodtime="2018-12-31  12:05:34", status="A")
 

@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, json, url_for, redirect
 from backend import *
-import datetime
 
 dbms = DBMS("166.111.71.220", "1521", "dbta")
 dbms.login(user="s2016011246", password="19980211")
@@ -102,21 +101,24 @@ def login_cook():
         return render_template('login_cook.html', error=True)
     return render_template("login_cook.html")
 
-@app.route("/comment/<customer_id>/<cart>", methods=["POST"])
-def comment(customer_id, cart):
-    orderid = "order" + str(customer_id[8:])
+@app.route("/comment/<customer_id>/<cart>/<price>", methods=["POST"])
+def comment(customer_id, cart, price):
 
-    for i in cart.split("&")[:-1]:
-        dbms.insert_cookfood(cookNo="cook0", dishNo=i, orderNo=orderid, status="A")
+    orderid = "order_"+str(customer_id)
+    if request.method == "POST":
+        dbms.insert_order(orderNo=orderid, customerNo=customer_id, totalPrice=price)
+        for i in cart.split("&")[:-1]:
+            dbms.insert_cookfood(cookNo="cook0", dishNo=i, orderNo=orderid, status="A")
 
-    dishes = dbms.sql("SELECT Dish.dishNo, dishName, cookName, dishPrice, CookFood.status FROM CookFood, Dish, Cook WHERE Cook.cookNo=CookFood.cookNo AND orderNo='{}' AND Dish.dishNo=CookFood.dishNo".format(orderid)).fetchall()
+    dishes = dbms.sql("SELECT Dish.dishNo, dishName, cookName, dishPrice, CookFood.status FROM CookFood, Dish, Cook WHERE Cook.cookNo=CookFood.cookNo AND orderNo='{}' AND Dish.dishNo=CookFood.dishNo ORDER BY Dish.dishNo".format(orderid)).fetchall()
     print(dishes)
     return render_template("comment.html", thisid=customer_id, dishes=dishes)
 
-@app.route("/thank/<customer_id>", methods=["POST"])
-def thank(customer_id):
-    return render_template("thank.html")
-
+@app.route("/track/<customer_id>", methods=["POST"])
+def track(customer_id):
+    orderid = "order_"+str(customer_id)
+    dishes = dbms.sql("SELECT Dish.dishNo, dishName, cookName, dishPrice, CookFood.status FROM CookFood, Dish, Cook WHERE Cook.cookNo=CookFood.cookNo AND orderNo='{}' AND Dish.dishNo=CookFood.dishNo ORDER BY Dish.dishNo".format(orderid)).fetchall()
+    return render_template("comment.html", thisid=customer_id, dishes=dishes)
 
 
 @app.route('/customer', methods=['POST', 'GET'])

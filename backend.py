@@ -17,12 +17,16 @@ class DBMS(object):
 
     def sql(self, sql):
         print("SQL:", sql)
-        return self.c.execute(sql)
+        try:
+            return self.c.execute(sql)
+        except Exception as e:
+            print(e)
+            return None
 
     def query_waiter(self, id):
         sql = "SELECT * FROM Waiter WHERE waiterNo='{}'".format(id)
         identity = self.sql(sql).fetchone()
-        sql = "SELECT CookFood.dishNo, CookFood.orderNo, Dish.dishName, Orders.ordertime, CookFood.status, Orders.waiterNo FROM CookFood, Dish, Orders WHERE CookFood.orderNo=Orders.orderNo AND Orders.waiterNo='{}' AND CookFood.dishNo=Dish.dishNo ORDER BY status, cookfoodtime DESC".format(id)
+        sql = "SELECT CookFood.dishNo, CookFood.orderNo, Dish.dishName, Orders.ordertime, CookFood.status FROM CookFood, Dish, Orders WHERE CookFood.orderNo=Orders.orderNo AND  CookFood.dishNo=Dish.dishNo ORDER BY status, cookfoodtime DESC"
         dishes = self.sql(sql).fetchall()
         return identity, dishes
 
@@ -87,20 +91,20 @@ class DBMS(object):
         self.sql(sql)
         self.conn.commit()
 
-    def insert_order(self, orderNo, customerNo, waiterNo, ordertime, totalPrice, status):
-        sql = "INSERT INTO Orders VALUES ('{}', '{}', '{}', TIMESTAMP '{}', {}, '{}')".format(orderNo, customerNo, waiterNo, ordertime, totalPrice, status)
+    def insert_order(self, orderNo, customerNo, totalPrice, ordertime=None):
+        if (ordertime == None):
+            ordertime = datetime.datetime.now()
+        sql = "INSERT INTO Orders VALUES ('{}', '{}', TIMESTAMP '{}', {})".format(orderNo, customerNo, ordertime, totalPrice)
         self.sql(sql)
         self.conn.commit()
 
     def insert_cookfood(self, dishNo, cookNo, orderNo, status, cookfoodtime=None):
         if (cookfoodtime == None):
             cookfoodtime = datetime.datetime.now()
-        try:
-            sql = "INSERT INTO CookFood VALUES('{}', '{}', '{}', TIMESTAMP '{}', '{}')".format(dishNo, cookNo, orderNo, cookfoodtime, status)
-            self.sql(sql)
-            self.conn.commit()
-        except Exception as e:
-            print(e)
+        sql = "INSERT INTO CookFood VALUES('{}', '{}', '{}', TIMESTAMP '{}', '{}')".format(dishNo, cookNo, orderNo, cookfoodtime, status)
+        self.sql(sql)
+        self.conn.commit()
+
 
 
     def insert_comment(self, dishNo, customerNo, content):
