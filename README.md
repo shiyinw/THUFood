@@ -6,7 +6,7 @@ pip3 install -r requirement.txt
 python3 app.py
 ```
 
-Demo video: [demo](shiyinw.github.io/files/thu_food.mov)
+Demo video: [demo](https://shiyinw.github.io/files/thu_food.mov)
 
 <video src="./demo.mov"></video>
 
