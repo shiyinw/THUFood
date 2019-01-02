@@ -211,6 +211,26 @@
                       </table>
                   </div>
 
+                  <div class="table-responsive">
+                      <table align="center" class="table">
+                      <h3>Password</h3>
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">用户编号</th>
+                                <th scope="col">用户密码</th>
+                                <th scope="col">用户类型</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in pw %}
+                            <tr>
+                                <td>{{ x[0] }}</td><td>{{ x[1] }}</td><td>{{ x[2]}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                  </div>
+
                     <form action="../data_admin/{{ thisid }}" method="post">
 
                             <input placeholder="SQL" style="width:300%;" type="text" class="form-control" id="name" name="sql">

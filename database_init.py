@@ -2,8 +2,8 @@
 
 from backend import DBMS
 
-dbms = DBMS("166.111.71.220", "1521", "dbta")
-dbms.login(user="s2016011246", password="19980211")
+dbms = DBMS("", "", "")
+dbms.login(user="", password="")
 
 # Password
 if True:

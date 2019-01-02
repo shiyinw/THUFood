@@ -1,10 +1,32 @@
 from flask import Flask, render_template, request, json, url_for, redirect
 from backend import *
 
-dbms = DBMS("166.111.71.220", "1521", "dbta")
-dbms.login(user="s2016011246", password="19980211")
+while(1):
+    print("Hello! Connecting to the server:")
+    address = input("Address: ")
+    port = input("Port: ")
+    name = input("Database Name: ")
+    try:
+        dbms = DBMS(address, port, name)
+    except Exception as e:
+        print(e)
+        continue
+    username = input("User: ")
+    password = input("Password: ")
+    try:
+        dbms.login(user=username, password=password)
+    except Exception as e:
+        print(e)
+        continue
+    break
+
 
 app = Flask(__name__, static_url_path='/templates')
+app.run(debug=True)
+
+
+
+
 
 @app.route('/')
 def hello_world():
@@ -176,5 +198,4 @@ def show_test():
     return render_template('menu.html')
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
